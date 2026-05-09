@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
 import { getEventByIdForOwner, listRsvpsForEvent } from "@/lib/eventsRepo";
+
+const DEFAULT_USER_ID = "default-user";
 
 export default async function ResponsesPage({
   params
@@ -9,11 +9,8 @@ export default async function ResponsesPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const session = await getServerSession(authOptions);
-  const ownerId = session?.user?.id;
-  if (!ownerId) notFound();
 
-  const event = await getEventByIdForOwner(id, ownerId);
+  const event = await getEventByIdForOwner(id, DEFAULT_USER_ID);
   if (!event) notFound();
 
   const rsvps = await listRsvpsForEvent(event._id);

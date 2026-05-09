@@ -1,13 +1,11 @@
 import Link from "next/link";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
 import { listEventsForOwner } from "@/lib/eventsRepo";
 import { Button } from "@/components/ui/button";
 
+const DEFAULT_USER_ID = "default-user";
+
 export default async function EventsPage() {
-  const session = await getServerSession(authOptions);
-  const ownerId = session?.user?.id;
-  const events = ownerId ? await listEventsForOwner(ownerId) : [];
+  const events = await listEventsForOwner(DEFAULT_USER_ID);
 
   return (
     <div className="grid gap-6">

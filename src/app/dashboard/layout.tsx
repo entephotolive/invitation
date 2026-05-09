@@ -1,16 +1,12 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
-import { SignOutButton } from "@/components/signout-button";
+
 
 export default async function DashboardLayout({
   children
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getServerSession(authOptions);
-  if (!session?.user) redirect("/signin?callbackUrl=/dashboard");
+  
 
   return (
     <div className="min-h-screen">
@@ -29,12 +25,7 @@ export default async function DashboardLayout({
               </Link>
             </nav>
           </div>
-          <div className="flex items-center gap-3">
-            <span className="hidden text-sm text-muted-foreground md:inline">
-              {session.user.email}
-            </span>
-            <SignOutButton />
-          </div>
+          
         </div>
       </header>
       <main className="mx-auto max-w-6xl px-4 py-8">{children}</main>

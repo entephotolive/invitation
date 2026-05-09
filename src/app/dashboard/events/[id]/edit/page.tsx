@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
 import { getEventByIdForOwner } from "@/lib/eventsRepo";
 import { EventEditor } from "@/components/event/event-editor";
+
+const DEFAULT_USER_ID = "default-user";
 
 export default async function EditEventPage({
   params
@@ -10,11 +10,8 @@ export default async function EditEventPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const session = await getServerSession(authOptions);
-  const ownerId = session?.user?.id;
-  if (!ownerId) notFound();
 
-  const event = await getEventByIdForOwner(id, ownerId);
+  const event = await getEventByIdForOwner(id, DEFAULT_USER_ID);
   if (!event) notFound();
 
   return (

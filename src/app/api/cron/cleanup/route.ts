@@ -3,17 +3,7 @@ import { getCollection } from "@/lib/db";
 import type { EventDoc } from "@/lib/models";
 import { deleteFromCloudinary } from "@/lib/cloudinary";
 
-function isAuthorized(authHeader: string | null) {
-  const secret = process.env.CRON_SECRET;
-  if (!secret) return false;
-  return authHeader === `Bearer ${secret}`;
-}
-
 export async function GET(req: Request) {
-  if (!isAuthorized(req.headers.get("authorization"))) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
   const events = await getCollection("events");
   const rsvps = await getCollection("rsvps");
   const wishes = await getCollection("wishes");
